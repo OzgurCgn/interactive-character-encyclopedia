@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hisar Arşivleri - Westeros Karakter Kayıtları</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+<body>
+
+    <div id="intro-screen">
+        <h2>"Gece karanlık ve dehşet dolu..."</h2>
+        <button id="intro-btn" onclick="enterArchive()">Hisar Arşivlerine Gir</button>
+    </div>
+
+    <div class="video-bg">
+        <video autoplay loop muted playsinline>
+            <source src="images/background.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="video-overlay"></div>
+    <div id="motto-overlay">
+        <img id="motto-sigil" src="" alt="Hane Sigili">
+        <div id="motto-text"></div>
+    </div>
+
+    <div class="sidebar">
+        <h2>Hisar Arşivi</h2>
+        <button class="sidebar-btn active" onclick="switchMainSection('karakterler', this)">Karakterler</button>
+        <button class="sidebar-btn" onclick="switchMainSection('haneler', this)">Haneler</button>
+        <button class="sidebar-btn" onclick="switchMainSection('olaylar', this)">Önemli Olaylar</button>
+    </div>
+
+    <div class="main-wrapper">
+        
+        <div id="karakterler" class="content-section active">
+
+    <div class="header-section">
+        <img src="images/left_symbol.png" alt="" class="corner-symbol corner-left" onerror="this.style.display='none'">
+        
+        <h1>Westeros Arşivleri</h1>
+        <div class="subtitle">Hisar'ın Büyük Üstatları Tarafından Kaleme Alınan Siciller</div>
+        <div id="random-quote" class="random-quote"></div>
+        <img src="images/right_symbol.png" alt="" class="corner-symbol corner-right" onerror="this.style.display='none'">
+    </div>
+
+    
+
+    <audio id="bg-audio" loop>
+        <source src="images/music.mp3" type="audio/mpeg"> 
+    </audio>
+    
+    <div class="audio-container">
+        <button id="audio-toggle" onclick="toggleAudio()">Müziği Aç 🎵</button>
+        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.2" oninput="changeVolume()">
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Sicillerde veya gizli kelimelerde ara..." onkeyup="filterAndRender()">
+        
+        <select id="houseFilter" onchange="filterHouseMotto()">
+            <option value="all">Tüm Sancaklar</option>
+            <option value="Stark">Stark Hanesi</option>
+            <option value="Targaryen">Targaryen Hanesi</option>
+            <option value="Lannister">Lannister Hanesi</option>
+            <option value="Baratheon">Baratheon Hanesi</option>
+            <option value="Greyjoy">Greyjoy Hanesi</option>
+            <option value="Martell">Martell Hanesi</option>
+            <option value="Tyrell">Tyrell Hanesi</option>
+            <option value="Bolton">Bolton Hanesi</option>
+            <option value="Kral Muhafızları">Kral Muhafızları</option>
+            <option value="Gece Nöbeti">Gece Nöbeti</option>
+        </select>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('got', this)">Buz ve Ateşin Şarkısı</button>
+        <button class="tab-btn" onclick="switchTab('hotd', this)">Ateş ve Kan</button>
+        <button class="tab-btn" onclick="switchTab('akotsc', this)">Yedi Krallık Şövalyesi</button>
+    </div>
+
+    <div class="character-grid" id="character-container"></div>
+
+    </div>
+    <div id="haneler" class="content-section">
+            <div class="header-section">
+                <h1>Westeros Haneleri</h1>
+                <div class="subtitle">Büyük ve Küçük Hanelerin Kadim Tarihleri</div>
+            </div>
+            
+            <div class="house-grid">
+                
+                <div class="house-card aura-stark">
+                    <div class="sigil-container">
+                        <img src="images/starksigil.png" alt="Stark" onerror="this.parentElement.style.display='none'">
+                    </div>
+                    <h3>Stark Hanesi</h3>
+                    <div class="house-motto">"Kış Geliyor"</div>
+                    <p class="house-desc">Kuzey'in Koruyucuları. İlk İnsanlar'ın soyundan gelirler ve binlerce yıl Kışyarı'ndan (Winterfell) Kuzey'i yönettiler. Onurları ve adalete olan bağlılıklarıyla bilinirler.</p>
+                </div>
+
+                <div class="house-card aura-targaryen">
+                    <div class="sigil-container">
+                        <img src="images/targaryensigil.png" alt="Targaryen" onerror="this.parentElement.style.display='none'">
+                    </div>
+                    <h3>Targaryen Hanesi</h3>
+                    <div class="house-motto">"Ateş ve Kan"</div>
+                    <p class="house-desc">Valyria kanı taşıyan ejderha efendileri. Fatih Aegon önderliğinde Yedi Krallık'ı birleştirip üç yüz yıl boyunca Demir Taht'ta oturdular.</p>
+                </div>
+
+                <div class="house-card aura-lannister">
+                    <div class="sigil-container">
+                        <img src="images/lannistersigil.png" alt="Lannister" onerror="this.parentElement.style.display='none'">
+                    </div>
+                    <h3>Lannister Hanesi</h3>
+                    <div class="house-motto">"Beni Kükrerken Duy!"</div>
+                    <p class="house-desc">Batı'nın Muhafızları. Altın madenleri sayesinde Westeros'un en zengin ve en güçlü hanesidir. Casterly Kayası'ndan hüküm sürerler.</p>
+                </div>
+
+                <div class="house-card">
+                    <div class="sigil-container">
+                        <img src="images/baratheonsigil.png" alt="Baratheon" onerror="this.parentElement.style.display='none'">
+                    </div>
+                    <h3>Baratheon Hanesi</h3>
+                    <div class="house-motto">"Öfke Bizimdir"</div>
+                    <p class="house-desc">Fırtına Toprakları'nın yöneticileri. Robert'ın İsyanı ile Demir Taht'ı Targaryenlerden almışlardır. Siyah saçları ve öfkeli yapılarıyla tanınırlar.</p>
+                </div>
+
+                <div class="house-card">
+                    <div class="sigil-container">
+                        <img src="images/greyjoysigil.png" alt="Greyjoy" onerror="this.parentElement.style.display='none'">
+                    </div>
+                    <h3>Greyjoy Hanesi</h3>
+                    <div class="house-motto">"Biz Ekmeyiz"</div>
+                    <p class="house-desc">Demir Adalar'ın denizci ve yağmacı halkı. Eski Yola inanırlar ve geçimlerini toprağı işleyerek değil, denizden alarak sağlarlar.</p>
+                </div>
+
+                <div class="house-card">
+                    <div class="sigil-container">
+                        <img src="images/martellsigil.png" alt="Martell" onerror="this.parentElement.style.display='none'">
+                    </div>
+                    <h3>Martell Hanesi</h3>
+                    <div class="house-motto">"Eğilmeyen, Bükülmeyen, Kırılmayan"</div>
+                    <p class="house-desc">Dorne'un yöneticileri. Westeros'un geri kalanından farklı kültürleri ve zehir kullanımındaki ustalıklarıyla bilinirler. Targaryen fetihlerine en uzun süre direnen hanedir.</p>
+                </div>
+
+            </div> </div>
+
+       <div id="olaylar" class="content-section">
+            <div class="header-section">
+                <h1>Tarihi Olaylar</h1>
+                <div class="subtitle">Westeros'u Şekillendiren Büyük Savaşlar ve İsyanlar</div>
+            </div>
+            
+            <div class="timeline">
+                
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">F.Ö. 114 (Fetihten Önce)</div>
+                        <h3>Valyria Kıyameti</h3>
+                        <p>Dünyanın en büyük imparatorluğu olan Valyria Özgür Halkı, bilinmeyen volkanik ve büyüsel bir felaketle tek bir gecede yok oldu. Ejderhaların çoğu öldü, sadece Targaryenler Ejderhakayası'na kaçarak kurtuldu.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">F.S. 1 (Fetihten Sonra)</div>
+                        <h3>Aegon'un Fethi</h3>
+                        <p>Fatih Aegon ve kız kardeşleri Visenya ile Rhaenys, üç devasa ejderhayla Westeros'u işgal etti. Yedi Krallık'ın altısı dize getirildi, düşmanların kılıçları Balerion'un ateşiyle eritilerek Demir Taht dövüldü.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">F.S. 129 - 131</div>
+                        <h3>Ejderhaların Dansı</h3>
+                        <p>Targaryen Hanesi'ni ikiye bölen en büyük ve en kanlı iç savaş. Gökyüzünde ejderhalar çarpıştı ve savaşın sonunda hanedan zayıflarken ejderhalar neredeyse nesli tükenme noktasına geldi.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">F.S. 157 - 161</div>
+                        <h3>Dorne'un Fethi</h3>
+                        <p>"Genç Ejderha" Kral Daeron I, Fatih Aegon'un bile dize getiremediği Dorne'u devasa bir orduyla işgal etti. Zafer kazanılmış gibi görünse de Dorne direnişi hiç bitmedi. Çıkan isyanlarda on binlerce asker ve bizzat Kral Daeron'un kendisi hayatını kaybetti. Dorne, krallığa kılıçla değil, yıllar sonra evlilikle katıldı.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">F.S. 196</div>
+                        <h3>Birinci Blackfyre İsyanı</h3>
+                        <p>Kral Aegon IV'ün ölüm döşeğinde tüm piçlerini meşrulaştırması krallığı ikiye böldü. Fatih Aegon'un Valyria çeliği kılıcını taşıyan Daemon Blackfyre, meşru varis Daeron II'ye karşı isyan bayrağını çekti. Kızıl Çimen Savaşı'nda Daemon'un ölümüyle isyan bastırılsa da, Blackfyre soyunun tehdidi nesiller boyu sürdü.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">F.S. 260</div>
+                        <h3>Dokuz Metelik Krallarının Savaşı</h3>
+                        <p>Blackfyre soyunun Demir Taht'ı ele geçirmek için yaptığı son büyük girişim. Canavar Maelys (Maelys the Monstrous) önderliğindeki paralı asker ittifakı Basamaktaşı Adaları'nı ele geçirdi. Genç şövalye Barristan Selmy'nin Maelys'i teke tek dövüşte öldürmesiyle Blackfyre erkek soyu sonsuza dek tükendi.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">F.S. 281</div>
+                        <h3>Harrenhal Turnuvası (Yalancı Bahar)</h3>
+                        <p>Westeros tarihinin en görkemli turnuvası, aynı zamanda krallığın sonunu getiren kıvılcım oldu. Prens Rhaegar Targaryen turnuvayı kazandıktan sonra, kendi karısı Elia Martell'i es geçerek Eddard Stark'ın kız kardeşi (ve Robert Baratheon'un nişanlısı) Lyanna Stark'ın kucağına kış güllerinden taç bıraktı.</p>
+                    </div>
+                </div>
+
+
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">F.S. 282 - 283</div>
+                        <h3>Robert'ın İsyanı</h3>
+                        <p>Deli Kral Aerys II Targaryen'e karşı başlatılan büyük isyan. Prens Rhaegar'ın Üç Dişli Mızrak'ta düşmesi ve Kral Toprakları'nın yağmalanmasıyla 300 yıllık Targaryen hanedanlığı kanlı bir şekilde son buldu.</p>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">F.S. 289</div>
+                        <h3>Greyjoy İsyanı</h3>
+                        <p>Balon Greyjoy, Demir Taht'a başkaldırarak kendini Demir Adalar'ın Kralı ilan etti. Ancak Kral Robert Baratheon ve Lord Eddard Stark önderliğindeki ordular, Pyke Kuşatması ile isyanı kanlı bir şekilde bastırdı.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">F.S. 298</div>
+                        <h3>Beş Kralın Çarpışması</h3>
+                        <p>Kral Robert'ın şüpheli ölümü ve ardından Lord Eddard Stark'ın ihanet suçlamasıyla idam edilmesi Yedi Krallık'ı kaosa sürükledi. Joffrey, Stannis, Renly, Robb Stark ve Balon Greyjoy aynı anda krallık iddia ederek kıtayı ateşe verdi.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">F.S. 299</div>
+                        <h3>Karasu Savaşı</h3>
+                        <p>Stannis Baratheon'un Kral Toprakları'na karadan ve denizden yaptığı devasa kuşatma. Kral Eli Tyrion Lannister'ın stratejik zekası ve devasa bir çılgınateş (wildfire) patlaması sayesinde şehir düşmekten son anda kurtarıldı.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">F.S. 299</div>
+                        <h3>Kızıl Düğün</h3>
+                        <p>Westeros tarihinin en karanlık ihaneti. Lord Walder Frey ve Roose Bolton'un Lannisterlar ile gizlice anlaşıp, misafir haklarını hiçe sayarak Kral Robb Stark'ı, annesi Catelyn'i ve tüm Kuzey ordusunu katletmesi.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">F.S. 300</div>
+                        <h3>Mor Düğün & Tywin'in Düşüşü</h3>
+                        <p>Kral Joffrey Baratheon, Margaery Tyrell ile kendi düğününde zehirlenerek öldürüldü. Cinayetle suçlanan Tyrion Lannister, babası Tywin'i bir arbaletle vurarak Kral Toprakları'ndan Essos'a kaçtı.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">F.S. 300</div>
+                        <h3>Kara Kale Savaşı</h3>
+                        <p>Mance Rayder önderliğindeki devasa Yabanıl ordusunun Gece Nöbeti'ne saldırısı. Jon Snow'un liderliğindeki savunma ve Stannis Baratheon'un süvarileriyle son anda yetişmesi sayesinde Duvar düşmekten son anda kurtarıldı.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">F.S. 300</div>
+                        <h3>Kefaret Yürüyüşü</h3>
+                        <p>İnanç'ın (Faith of the Seven) silahlanıp güçlenmesiyle Kraliçe Cersei Lannister tutuklandı. Suçlarını itiraf etmek zorunda bırakılan Cersei, Baelor Septi'nden Kızıl Kale'ye kadar halkın aşağılamaları eşliğinde çırılçıplak yürütüldü.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">F.S. 300</div>
+                        <h3>Kışın Ayak Sesleri</h3>
+                        <p>Kuzey'de Jon Snow, Yabanılları Duvar'dan geçirdiği için kendi nöbetçi kardeşleri tarafından "Nöbet İçin" denilerek hançerlendi. Essos'ta ise Daenerys Targaryen, isyancılardan kurtulmak için ejderhası Drogon'un sırtında Dothraki Denizi'ne uçtu. Ve Kış tamamen geldi...</p>
+                    </div>
+                </div>
+
+            </div> </div>
+
+    </div>
+    
+
+    <div class="modal-overlay" id="character-modal" onclick="closeModalOutside(event)">
+        <div class="modal-content">
+            <div id="modal-watermark"></div>
+            <span class="close-btn" onclick="closeModal()">✕</span>
+            <h2 id="modal-name"></h2>
+            <div class="modal-info">
+                <p><strong>Doğum & Ölüm:</strong> <span id="modal-dates"></span></p>
+                <p><strong>Bağlılık:</strong> <span id="modal-affiliation"></span></p>
+                <hr style="border: 0; border-top: 1px dashed #cbb497; margin: 20px 0;">
+                <p id="modal-summary"></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="scrollTopBtn" onclick="scrollToTop()">🦅</div>
+       
+</body>
+</html>
